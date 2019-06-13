@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo4-绿色正方体旋转</title>
+    <script src="js/three.js"></script>
+    <style>
+        #cavas-demo1{
+            width: 100%;
+            height:600px;
+        }
+    </style>
+</head>
+<body>
+<div id="cavas-demo1"></div>
+<script>
+    var scene = new THREE.Scene();
+    var width = document.getElementById("cavas-demo1").clientWidth;
+    var height = document.getElementById("cavas-demo1").clientHeight;
+    var camera = new THREE.PerspectiveCamera(75,width/height, 0.1,1000);
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( width, height );
+    document.getElementById("cavas-demo1").appendChild( renderer.domElement );
+
+    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    var cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
+
+    camera.position.z = 8;
+
+    var animate = function () {
+        // 设置旋转的方向及速度
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        // cube.rotation.z += 0.01;
+        renderer.render( scene, camera );
+        requestAnimationFrame( animate );
+    };
+
+    animate();
+</script>
+</body>
+</html>

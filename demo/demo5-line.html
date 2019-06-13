@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo5-线条绘制</title>
+    <script src="js/three.js"></script>
+    <style>
+        #cavas-demo1{
+            width: 100%;
+            height:600px;
+        }
+    </style>
+</head>
+<body>
+<div id="cavas-demo1"></div>
+<script>
+    var scene = new THREE.Scene();
+    var width = document.getElementById("cavas-demo1").clientWidth;
+    var height = document.getElementById("cavas-demo1").clientHeight;
+    var camera = new THREE.PerspectiveCamera(45,width/height, 1,500);
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( width, height );
+    document.getElementById("cavas-demo1").appendChild( renderer.domElement );
+
+   camera.position.set(0,0,100);//设置camera位置点
+   camera.lookAt(0,0,0);
+   var material = new THREE.LineBasicMaterial({
+       color:0xeeeeee,
+       linewidth:5
+   });//定义材质及线条色
+    // 定义几何体
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(-10,0,0));
+    geometry.vertices.push(new THREE.Vector3(0,10,0));
+    geometry.vertices.push(new THREE.Vector3(10,0,0));
+    var line = new THREE.Line(geometry,material);//绘制线条
+    scene.add(line);
+
+    // 点光源
+    var light = new THREE.DirectionalLight(0xFFFFFF,2.0);
+    light.position.set(300,100,500);
+    scene.add(light);
+
+    var cube;
+    function initObject(){
+        cube = new THREE.Mesh(
+            new THREE.CubeGeometry(20,20,20),
+            new THREE.MeshLambertMaterial({color: 0xff0000})
+        );
+        scene.add(cube);
+        cube.position.set(30,0,0);
+
+        // sphere = new THREE.Mesh(
+        //     new THREE.SphereGeometry(10,10,10),
+        //     new THREE.MeshLambertMaterial({color: 0x00ff00})
+        // );
+        // scene.add(sphere);
+        // sphere.position.set(30,0,0);
+        //
+        // plane = new THREE.Mesh(
+        //     new THREE.PlaneGeometry(20, 20),
+        //     new THREE.MeshLambertMaterial({color: 0x0000ff})
+        // );
+        // scene.add(plane);
+        // plane.position.set(30,20,0);
+    }
+    var animate = function () {
+        initObject();
+        line.rotateY(0.02);//绕Y轴以0.02S旋转
+        cube.rotation.y += 0.1;//绕Y轴以0.02S旋转
+        renderer.render( scene, camera );
+        requestAnimationFrame( animate );
+    };
+
+    animate();
+</script>
+</body>
+</html>
