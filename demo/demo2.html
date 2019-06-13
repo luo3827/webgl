@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>demo2-网格绘制</title>
     <script src="js/three.js"></script>
+    <script src="js/stats.min.js"></script>
     <style type="text/css">
         div#canvas-frame {
             border: none;
@@ -19,7 +20,7 @@
 <body onload="threeStart()">
 <div id="canvas-frame"></div>
 <script>
-    var renderer,width,height;
+    var renderer,width,height,stats;
     function initThree() {
         width = document.getElementById('canvas-frame').clientWidth;
         height = document.getElementById('canvas-frame').clientHeight;
@@ -29,6 +30,15 @@
         renderer.setSize(width, height);
         document.getElementById('canvas-frame').appendChild(renderer.domElement);
         renderer.setClearColor(0xFFFFFF, 1.0);
+
+
+        stats = new Stats();
+        stats.setMode(0); // 参数为0的时候，表示显示的是FPS界面，参数为1的时候，表示显示的是MS界面
+        // 将stats的界面对应左上角;stats的domElement表示绘制的目的地（DOM），波形图就绘制在这上面。
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
+        document.getElementById('canvas-frame').appendChild( stats.domElement );
     }
 
     var camera;
@@ -72,11 +82,13 @@
 
         }
     }
+
     function animate(){
         renderer.clear();
         renderer.render(scene, camera);
         camera.rotateZ(0.02);
-        // requestAnimationFrame(animate)
+        requestAnimationFrame(animate);
+        stats.update();
     }
     function threeStart() {
         initThree();
