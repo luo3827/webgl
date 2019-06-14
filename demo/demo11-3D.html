@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo11-3D的旋转</title>
+    <script src="js/three.js"></script>
+    <script src="js/stats.min.js"></script>
+    <style>
+        body{
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<script>
+    var scene = new THREE.Scene();
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    document.body.appendChild(renderer.domElement);
+    renderer.setClearColor(0xFFFFFF,1.0);
+    var camera = new THREE.PerspectiveCamera(45,width/height,1,10000);
+    camera.position.x = 100;
+    camera.position.y = 300;
+    camera.position.z = 600;
+    camera.up.x = 0;
+    camera.up.y = 1;
+    camera.up.z = 0;
+    camera.lookAt(0,0,0);
+
+    var stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.left = '10px';
+    stats.domElement.style.top = '10px';
+    document.body.appendChild(stats.domElement);
+
+
+    var  geometry = new THREE.BoxGeometry(100,100,100);
+    console.log(geometry.faces);
+    for (var i = 0; i <geometry.faces.length; i+=2){
+        var hex = Math.random()*0xffffff;
+        geometry.faces[i].color.setHex(hex);
+        geometry.faces[i+1].color.setHex(hex);
+    }
+    var material = new THREE.MeshBasicMaterial({vertexColors:THREE.FaceColors});
+    var mesh = new THREE.Mesh(geometry,material);
+    mesh.position = new THREE.Vector3(0,0,0);
+    scene.add(mesh);
+
+    var light = new THREE.AmbientLight(0xFFFFFF);
+    light.position.set(100,100,200);
+    scene.add(light);
+
+    var grid = new THREE.GridHelper(1000,50,0x0000ff, 0x808080);
+    scene.add(grid);
+
+    function animation() {
+        mesh.rotateX(0.01);
+        grid.rotateX(0.01);
+        renderer.render(scene,camera);
+        requestAnimationFrame(animation);
+    }
+    animation();
+</script>
+</body>
+</html>
